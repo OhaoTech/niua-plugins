@@ -90,3 +90,7 @@ Legacy `/import/job_<uuid>` links still work.
   parser, clipboard reader, import router, menu commands.
 
 Version 1.0.0.
+
+## License
+
+MIT — see [LICENSE](../LICENSE). Copyright © 2026 Ohao Tech.

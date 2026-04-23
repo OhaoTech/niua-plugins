@@ -28,6 +28,7 @@ rm -rf "dist/${PLUGIN}" "$OUT"
 
 mkdir "dist/${PLUGIN}"
 cp NIUA.uplugin README.md "dist/${PLUGIN}/"
+cp ../LICENSE "dist/${PLUGIN}/"
 cp -r Content "dist/${PLUGIN}/"
 
 (cd dist && zip -qr "${ZIPNAME}.zip" "${PLUGIN}")

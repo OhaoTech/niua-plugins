@@ -27,6 +27,7 @@ rm -rf "dist/${MODULE}" "$OUT"
 
 mkdir "dist/${MODULE}"
 cp __init__.py README.md "dist/${MODULE}/"
+cp ../LICENSE "dist/${MODULE}/"
 
 (cd dist && zip -qr "${ZIPNAME}.zip" "${MODULE}")
 rm -rf "dist/${MODULE}"

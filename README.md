@@ -43,4 +43,4 @@ cd unreal  && ./build.sh   # produces dist/niua-unreal-<version>.zip
 
 ## License
 
-See repository root.
+MIT — see [LICENSE](LICENSE). Copyright © 2026 Ohao Tech.

@@ -85,3 +85,7 @@ One `__init__.py`, one HTTP client, one operator per top-level action. The impor
 6. Status messages ride `bpy.app.timers` back to the main thread to touch `bpy.data` safely.
 
 Adding a new asset type means: add a pipeline branch in `_import_by_pipeline()`. That's it — no new HTTP, no new operator, no new UI.
+
+## License
+
+MIT — see [LICENSE](../LICENSE). Copyright © 2026 Ohao Tech.
