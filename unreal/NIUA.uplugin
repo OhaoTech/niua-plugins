@@ -1,0 +1,26 @@
+{
+    "FileVersion": 3,
+    "Version": 1,
+    "VersionName": "1.0.0",
+    "FriendlyName": "NIUA",
+    "Description": "Import AI-generated assets from NIUA into Unreal. Paste an /import/r2/... link from the web app, hit Import — works for images, textured meshes, rigged meshes, motion capture, and music.",
+    "Category": "Content",
+    "CreatedBy": "Ohao Tech",
+    "CreatedByURL": "https://niua.ohao.tech",
+    "DocsURL": "https://niua.ohao.tech/docs",
+    "MarketplaceURL": "",
+    "CanContainContent": true,
+    "IsBetaVersion": true,
+    "IsExperimentalVersion": false,
+    "Installed": false,
+    "Plugins": [
+        {
+            "Name": "PythonScriptPlugin",
+            "Enabled": true
+        },
+        {
+            "Name": "EditorScriptingUtilities",
+            "Enabled": true
+        }
+    ]
+}
