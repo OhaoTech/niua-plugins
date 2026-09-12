@@ -1,6 +1,6 @@
 # NIUA — engine plugins
 
-Import bridges that pull AI-generated assets from [NIUA](https://niua.ohao.tech)
+Import bridges that pull AI-generated assets from [NIUA](https://ohao.tech/niua)
 into your DCC tool. Generate on the web, click **Send to Blender / UE** to copy
 an `/import/r2/<key>` URL, paste-and-import in your editor.
 
@@ -13,8 +13,8 @@ Each plugin's folder has its own `README.md` with full install + usage steps.
 
 ## Get an API token
 
-1. Sign in at <https://niua.ohao.tech/login>
-2. <https://niua.ohao.tech/settings> → Developer → create a key
+1. Sign in at <https://ohao.tech/niua/login>
+2. <https://ohao.tech/niua/settings> → Developer → create a key
 3. Paste the token into the plugin's preferences (Blender) or `~/.niua/config.json` (Unreal)
 
 ## What the plugins import

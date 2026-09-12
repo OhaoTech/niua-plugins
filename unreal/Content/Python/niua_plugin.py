@@ -33,7 +33,8 @@ import unreal
 # ── Config ──────────────────────────────────────────────────────────────────
 
 PLUGIN_VERSION = "1.0.0"
-DEFAULT_API_URL = "https://api.niua.ohao.tech"
+DEFAULT_API_URL = "https://api.ohao.tech"
+DEFAULT_WEB_URL = "https://ohao.tech/niua"
 CONFIG_PATH = Path.home() / ".niua" / "config.json"
 DEFAULT_IMPORT_DIR = "/Game/NIUA/Imports"
 
@@ -41,8 +42,24 @@ DEFAULT_IMPORT_DIR = "/Game/NIUA/Imports"
 # of R2) sometimes 403s on that UA. Same treatment for UE — send a branded UA.
 USER_AGENT = (
     f"NIUA-Unreal/{PLUGIN_VERSION} "
-    f"(+https://niua.ohao.tech; Python/{sys.version_info.major}.{sys.version_info.minor})"
+    f"(+{DEFAULT_WEB_URL}; Python/{sys.version_info.major}.{sys.version_info.minor})"
 )
+
+# Production / retired API hosts map to the product path, not the apex.
+# Custom `api.` hosts still strip the subdomain so local/staging UIs work.
+_CANONICAL_API_HOSTS = ("api.ohao.tech", "api.niua.ohao.tech", "niua.ohao.tech")
+
+
+def _web_base_from_api(api_url):
+    """Derive the product web origin from an API base URL."""
+    api = (api_url or DEFAULT_API_URL).rstrip("/")
+    host = api.split("://", 1)[-1]
+    if host in _CANONICAL_API_HOSTS:
+        return DEFAULT_WEB_URL
+    web = api.replace("https://api.", "https://").replace("http://api.", "http://")
+    if not web or web == api:
+        return DEFAULT_WEB_URL
+    return web
 
 
 def _load_config():
@@ -87,7 +104,7 @@ class NIUAClient:
         if not token:
             raise RuntimeError(
                 "No API token — run Tools > NIUA > Set API Token and paste one "
-                "from https://niua.ohao.tech/settings → Developer."
+                "from https://ohao.tech/niua/settings → Developer."
             )
         return cfg
 
@@ -368,17 +385,14 @@ def set_api_token():
         pass
     _notify(
         f"Edit {CONFIG_PATH} and set 'api_token'. Get one from "
-        f"https://niua.ohao.tech/settings → Developer."
+        f"{DEFAULT_WEB_URL}/settings → Developer."
     )
 
 
 def open_web_settings():
     """Menu command: open the NIUA Developer settings page for token copy-paste."""
     cfg = _load_config()
-    api = cfg.get("api_url", DEFAULT_API_URL).rstrip("/")
-    web = api.replace("https://api.", "https://").replace("http://api.", "http://")
-    if web == api:
-        web = "https://niua.ohao.tech"
+    web = _web_base_from_api(cfg.get("api_url", DEFAULT_API_URL))
     unreal.SystemLibrary.launch_url(f"{web}/settings")
 
 
