@@ -1,6 +1,6 @@
 # NIUA for Blender
 
-Import AI-generated game assets into Blender — characters, meshes, rigs, motions, music — all generated on the web workbench at [niua.ohao.tech](https://niua.ohao.tech).
+Import AI-generated game assets into Blender — characters, meshes, rigs, motions, music — all generated on the web workbench at [ohao.tech/niua](https://ohao.tech/niua).
 
 **Version:** 2.0.0 · **Blender:** 4.0+
 
@@ -14,7 +14,7 @@ Import AI-generated game assets into Blender — characters, meshes, rigs, motio
 2. **Click "Send to Blender"** on the asset. A shareable link is copied to your clipboard.
 3. **Paste into this plugin.** Press **Import**. The asset lands in your scene.
 
-Links look like `https://niua.ohao.tech/import/job_<uuid>`. They're account-bound — pasting a link belonging to a different user returns "You don't own this asset." Screen sharing, chat history, and server logs don't leak your assets because the plugin authenticates with *your* API token separately.
+Links look like `https://ohao.tech/niua/import/job_<uuid>`. They're account-bound — pasting a link belonging to a different user returns "You don't own this asset." Screen sharing, chat history, and server logs don't leak your assets because the plugin authenticates with *your* API token separately.
 
 ## What gets imported
 
@@ -40,7 +40,7 @@ Panel lives at **View3D → Sidebar (N) → NIUA**.
 
 ## Get your API token
 
-1. Sign in at [niua.ohao.tech](https://niua.ohao.tech).
+1. Sign in at [ohao.tech/niua](https://ohao.tech/niua).
 2. **Settings → Developer → Generate Token.**
 3. Copy, paste into Blender's NIUA preferences.
 
@@ -57,7 +57,7 @@ The plugin has a **Get API Token (Web)** button that opens that page directly.
 
 ### What the URL field accepts
 Anything that contains a NIUA job UUID:
-- Full URL: `https://niua.ohao.tech/import/job_abc-123-def`
+- Full URL: `https://ohao.tech/niua/import/job_abc-123-def`
 - Bare UUID: `abc-123-def`
 - With prefix: `job_abc-123-def`
 

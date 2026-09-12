@@ -1,6 +1,6 @@
 """NIUA — Import AI-generated assets into Blender (v2.0.0)
 
-Generate on the web workbench at niua.ohao.tech, where chat + preview +
+Generate on the web workbench at ohao.tech/niua, where chat + preview +
 variation work properly. Paste the "Send to Blender" link into this plugin
 to bring the finished asset into your scene.
 
@@ -11,7 +11,7 @@ Supported asset pipelines (auto-detected from the link):
   motion      → imported as BVH armature
   music       → saved to a temp path (drop into your DAW)
 
-Get an API token at https://niua.ohao.tech/settings → Developer tab.
+Get an API token at https://ohao.tech/niua/settings → Developer tab.
 """
 
 bl_info = {
@@ -20,9 +20,9 @@ bl_info = {
     "version": (2, 1, 2),
     "blender": (4, 0, 0),
     "location": "View3D > Sidebar > NIUA",
-    "description": "Import AI-generated game assets from niua.ohao.tech. Paste an asset link and press Import.",
+    "description": "Import AI-generated game assets from ohao.tech/niua. Paste an asset link and press Import.",
     "category": "3D View",
-    "doc_url": "https://niua.ohao.tech/docs",
+    "doc_url": "https://ohao.tech/niua/docs",
 }
 
 import bpy
@@ -37,6 +37,24 @@ from bpy.props import StringProperty
 from urllib.request import Request, urlopen
 from urllib.parse import urljoin
 
+DEFAULT_API_URL = "https://api.ohao.tech"
+DEFAULT_WEB_URL = "https://ohao.tech/niua"
+# Production / retired API hosts map to the product path, not the apex.
+# Custom `api.` hosts still strip the subdomain so local/staging UIs work.
+_CANONICAL_API_HOSTS = ("api.ohao.tech", "api.niua.ohao.tech", "niua.ohao.tech")
+
+
+def _web_base_from_api(api_url):
+    """Derive the product web origin from an API base URL."""
+    api = (api_url or DEFAULT_API_URL).rstrip("/")
+    host = api.split("://", 1)[-1]
+    if host in _CANONICAL_API_HOSTS:
+        return DEFAULT_WEB_URL
+    web = api.replace("https://api.", "https://").replace("http://api.", "http://")
+    if not web or web == api:
+        return DEFAULT_WEB_URL
+    return web
+
 
 # ── Preferences ──────────────────────────────────────────────────────
 
@@ -46,7 +64,7 @@ class NIUAPreferences(bpy.types.AddonPreferences):
     api_url: StringProperty(
         name="API URL",
         description="NIUA API base URL",
-        default="https://api.niua.ohao.tech",
+        default=DEFAULT_API_URL,
     )
 
     api_token: StringProperty(
@@ -91,7 +109,10 @@ _SSL_CONTEXT = _build_ssl_context()
 
 # Blender's Python ships as "Python-urllib/3.x", which Cloudflare (in front
 # of R2) sometimes rejects with a 403. We send a regular browser UA instead.
-_USER_AGENT = f"NIUA-Blender/{bl_info['version'][0]}.{bl_info['version'][1]}.{bl_info['version'][2]} (+https://niua.ohao.tech)"
+_USER_AGENT = (
+    f"NIUA-Blender/{bl_info['version'][0]}.{bl_info['version'][1]}.{bl_info['version'][2]} "
+    f"(+{DEFAULT_WEB_URL})"
+)
 
 
 class NIUAClient:
@@ -178,9 +199,9 @@ def parse_asset_ref(text):
         ("job", "<uuid>")
         None
     Accepted shapes:
-      - https://niua.ohao.tech/import/r2/<key>   (primary)
+      - https://ohao.tech/niua/import/r2/<key>   (primary)
       - /import/r2/<key>
-      - https://niua.ohao.tech/import/job_<uuid> (legacy)
+      - https://ohao.tech/niua/import/job_<uuid> (legacy)
       - /import/job_<uuid> / job_<uuid>
       - Bare UUID
     """
@@ -263,10 +284,7 @@ class NIUA_OT_OpenSettings(bpy.types.Operator):
 
     def execute(self, context):
         prefs = NIUAClient.get_prefs()
-        api = prefs.api_url.rstrip("/")
-        web = api.replace("https://api.", "https://").replace("http://api.", "http://")
-        if web == api:
-            web = "https://niua.ohao.tech"
+        web = _web_base_from_api(prefs.api_url)
         webbrowser.open(f"{web}/settings")
         self.report({'INFO'}, f"Opened {web}/settings")
         return {'FINISHED'}
@@ -279,10 +297,7 @@ class NIUA_OT_OpenWebApp(bpy.types.Operator):
 
     def execute(self, context):
         prefs = NIUAClient.get_prefs()
-        api = prefs.api_url.rstrip("/")
-        web = api.replace("https://api.", "https://").replace("http://api.", "http://")
-        if web == api:
-            web = "https://niua.ohao.tech"
+        web = _web_base_from_api(prefs.api_url)
         webbrowser.open(f"{web}/chat")
         return {'FINISHED'}
 
@@ -391,7 +406,7 @@ class NIUA_OT_PasteFromClipboard(bpy.types.Operator):
 class NIUAProperties(bpy.types.PropertyGroup):
     import_url: StringProperty(
         name="NIUA Link",
-        description="Paste a link copied from niua.ohao.tech (the 'Send to Blender' button)",
+        description="Paste a link copied from ohao.tech/niua (the 'Send to Blender' button)",
         default="",
     )
     status_msg: StringProperty(name="Status", default="")

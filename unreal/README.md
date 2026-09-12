@@ -46,19 +46,19 @@ the file itself — we don't guess.
 
    ```json
    {
-     "api_url": "https://api.niua.ohao.tech",
+     "api_url": "https://api.ohao.tech",
      "api_token": "mg_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
    }
    ```
 
-   Get a token from <https://niua.ohao.tech/settings> → Developer.
+   Get a token from <https://ohao.tech/niua/settings> → Developer.
 
 5. **Verify.** `Tools > NIUA > Test Connection` — should show
    `Connected — token valid · $X.XX`.
 
 ## Use
 
-1. Generate or browse an asset on <https://niua.ohao.tech/chat> or
+1. Generate or browse an asset on <https://ohao.tech/niua/chat> or
    `/assets`.
 2. Click **Send to Blender / UE** on the preview, modal previewer, or asset
    vault card — this copies an `/import/r2/…` link to your clipboard.
